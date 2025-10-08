@@ -1,0 +1,16 @@
+{
+	"name": "@learn-events/common",
+	"version": "1.0.0",
+	"description": "Learn Events Common",
+	"type": "module",
+	"main": "./src/index.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kennarddh/learn-events.git"
+	},
+	"author": "kennarddh",
+	"bugs": {
+		"url": "https://github.com/kennarddh/learn-events/issues"
+	},
+	"homepage": "https://github.com/kennarddh/learn-events#readme"
+}

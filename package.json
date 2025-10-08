@@ -1,0 +1,55 @@
+{
+	"name": "learn-events",
+	"version": "",
+	"description": "",
+	"private": true,
+	"type": "module",
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"lint:check": "eslint --cache",
+		"lint:fix": "eslint --cache --fix",
+		"prettier:check": "prettier -c \"./**/*.{html,ts,tsx,json,md,prettierrc}\"",
+		"prettier:fix": "prettier -w \"./**/*.{html,ts,tsx,json,md,prettierrc}\"",
+		"types:check": "tsc --noEmit",
+		"check": "npm run lint:check && npm run prettier:check && npm run types:check",
+		"fix": "npm run lint:fix && npm run prettier:fix && npm run types:check"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kennarddh/learn-events.git"
+	},
+	"bugs": {
+		"url": "https://github.com/kennarddh/learn-events/issues"
+	},
+	"homepage": "https://github.com/kennarddh/learn-events#readme",
+	"author": "kennarddh",
+	"devDependencies": {
+		"@eslint/js": "^9.26.0",
+		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
+		"@types/eslint": "^9.6.1",
+		"@types/eslint-plugin-jsx-a11y": "^6.10.0",
+		"@types/eslint-plugin-security": "^3.0.0",
+		"@types/node": "^22.15.17",
+		"@typescript-eslint/utils": "^8.32.0",
+		"concurrently": "^9.1.2",
+		"cross-env": "^7.0.3",
+		"eslint": "^9.26.0",
+		"eslint-config-prettier": "^10.1.5",
+		"eslint-import-resolver-typescript": "^4.3.4",
+		"eslint-plugin-import-x": "^4.11.1",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"eslint-plugin-prettier": "^5.4.0",
+		"eslint-plugin-react": "^7.37.5",
+		"eslint-plugin-react-hooks": "5.2.0",
+		"eslint-plugin-security": "^3.0.1",
+		"globals": "^16.1.0",
+		"jiti": "^2.4.2",
+		"prettier": "^3.5.3",
+		"rimraf": "^6.0.1",
+		"tsx": "^4.19.4",
+		"typescript": "^5.8.3",
+		"typescript-eslint": "^8.32.0"
+	}
+}
