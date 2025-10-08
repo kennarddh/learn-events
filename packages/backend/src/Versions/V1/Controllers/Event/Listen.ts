@@ -1,5 +1,7 @@
 import { CelosiaResponse, Controller, ControllerRequest, DI, EmptyObject } from '@celosiajs/core'
 
+import { z } from 'zod/v4'
+
 import EventService from 'Services/EventService'
 
 class Listen extends Controller {
@@ -19,10 +21,19 @@ class Listen extends Controller {
 
 		response.expressResponse.flushHeaders()
 
-		const listenerId = this.eventService.registerListener(response)
+		const listenerId = await this.eventService.registerListener(
+			response,
+			request.query.lastReceivedMessageId,
+		)
 
 		request.expressRequest.on('close', () => {
 			this.eventService.removeListener(listenerId)
+		})
+	}
+
+	public override get query() {
+		return z.object({
+			lastReceivedMessageId: z.coerce.bigint().min(1n).optional(),
 		})
 	}
 }

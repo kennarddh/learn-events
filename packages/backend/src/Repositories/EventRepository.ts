@@ -8,43 +8,38 @@ import { DataAccessError, InvalidStateError, ResourceNotFoundError } from '../Er
 import PrismaRepository from './PrismaRepository'
 import { PaginationOptions } from './Types'
 
-export interface UserQueryOptions {
-	select?: Prisma.UserSelect
+export interface EventQueryOptions {
+	select?: Prisma.EventSelect
 }
 
-export interface UserQueryUniqueOptions extends UserQueryOptions {
-	filter: Prisma.UserWhereUniqueInput
+export interface EventQueryUniqueOptions extends EventQueryOptions {
+	filter: Prisma.EventWhereUniqueInput
 }
 
-export interface UserQueryAllOptions extends UserQueryOptions {
-	filter?: Prisma.UserWhereInput
-	sort?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+export interface EventQueryAllOptions extends EventQueryOptions {
+	filter?: Prisma.EventWhereInput
+	sort?: Prisma.EventOrderByWithRelationInput | Prisma.EventOrderByWithRelationInput[]
 	pagination?: PaginationOptions
 }
 
-export interface UserCountOptions {
-	filter?: Prisma.UserWhereInput
-	sort?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+export interface EventCountOptions {
+	filter?: Prisma.EventWhereInput
+	sort?: Prisma.EventOrderByWithRelationInput | Prisma.EventOrderByWithRelationInput[]
 }
 
-export interface UserUpdateOptions {
-	filter: Prisma.UserWhereUniqueInput
-	data: Prisma.UserUpdateArgs['data']
-}
-
-export interface UserCreateOptions extends UserQueryOptions {
-	data: Prisma.UserCreateArgs['data']
+export interface EventCreateOptions extends EventQueryOptions {
+	data: Prisma.EventCreateArgs['data']
 }
 
 @Injectable()
-class UserRepository extends PrismaRepository {
+class EventRepository extends PrismaRepository {
 	constructor(prisma: Prisma.TransactionClient) {
-		super('UserRepositorcy', prisma)
+		super('EventRepository', prisma)
 	}
 
-	async findUnique<T = unknown>(options: UserQueryUniqueOptions) {
+	async findUnique<T = unknown>(options: EventQueryUniqueOptions) {
 		try {
-			const result = await this.prisma.user.findUnique({
+			const result = await this.prisma.event.findUnique({
 				where: options.filter,
 				...(options.select !== undefined ? { select: options.select } : {}),
 			})
@@ -57,11 +52,11 @@ class UserRepository extends PrismaRepository {
 		}
 	}
 
-	async findMany<T = unknown>(options: UserQueryAllOptions = {}) {
+	async findMany<T = unknown>(options: EventQueryAllOptions = {}) {
 		const pagination = this.buildPrismaPagination(options.pagination)
 
 		try {
-			const result = await this.prisma.user.findMany({
+			const result = await this.prisma.event.findMany({
 				...(options.filter !== undefined ? { where: options.filter } : {}),
 				...(options.sort !== undefined ? { orderBy: options.sort } : {}),
 				...(options.select !== undefined ? { select: options.select } : {}),
@@ -77,9 +72,9 @@ class UserRepository extends PrismaRepository {
 		}
 	}
 
-	async count(options: UserCountOptions): Promise<number> {
+	async count(options: EventCountOptions): Promise<number> {
 		try {
-			return await this.prisma.user.count({
+			return await this.prisma.event.count({
 				...(options.filter !== undefined ? { where: options.filter } : {}),
 				...(options.sort !== undefined ? { orderBy: options.sort } : {}),
 			})
@@ -90,16 +85,16 @@ class UserRepository extends PrismaRepository {
 		}
 	}
 
-	async create(options: UserCreateOptions) {
+	async create(options: EventCreateOptions) {
 		try {
-			return await this.prisma.user.create({
+			return await this.prisma.event.create({
 				data: options.data,
 				...(options.select !== undefined ? { select: options.select } : {}),
 			})
 		} catch (error) {
 			if (error instanceof Prisma.PrismaClientKnownRequestError) {
 				if (error.code === 'P2025') {
-					throw new ResourceNotFoundError('UserGroup')
+					throw new ResourceNotFoundError('EventGroup')
 				} else if (error.code === 'P2003') {
 					throw new ResourceNotFoundError('location')
 				} else if (
@@ -115,36 +110,6 @@ class UserRepository extends PrismaRepository {
 			throw new DataAccessError()
 		}
 	}
-
-	async update(options: UserUpdateOptions) {
-		try {
-			await this.prisma.user.update({
-				data: options.data,
-				where: options.filter,
-				select: { id: true },
-			})
-		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (
-					error.code === 'P2025' &&
-					typeof error.meta?.cause === 'string' &&
-					error.meta.cause.includes('UserGroup')
-				) {
-					throw new ResourceNotFoundError('UserGroup')
-				} else if (
-					error.code === 'P2002' &&
-					Array.isArray(error.meta?.target) &&
-					error.meta.target[0] === 'email'
-				) {
-					throw new InvalidStateError('update', 'emailAlreadyExists')
-				}
-			}
-
-			this.logger.error('Update.', error)
-
-			throw new DataAccessError()
-		}
-	}
 }
 
-export default UserRepository
+export default EventRepository

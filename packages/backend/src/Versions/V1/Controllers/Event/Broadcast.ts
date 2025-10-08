@@ -14,7 +14,7 @@ class Broadcast extends Controller {
 		request: ControllerRequest<Broadcast>,
 		response: CelosiaResponse,
 	) {
-		this.eventService.sendBroadcast(request.body.payload)
+		await this.eventService.sendBroadcast(request.body.payload)
 
 		response.sendStatus(204)
 	}
