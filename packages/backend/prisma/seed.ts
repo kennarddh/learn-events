@@ -16,7 +16,6 @@ const prisma = new PrismaClient({
 const main = async () => {
 	if ((await prisma.user.count()) > 0) return
 
-
 	let passwordHashSecret
 
 	if (process.env.PASSWORD_HASH_SECRET_FILE) {
